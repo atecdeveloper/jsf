@@ -19,6 +19,7 @@ import br.com.caelum.livraria.util.RedirectView;
 public class LivroBean {
 
 	private Integer autorId;
+	private Integer livroId;
 
 	private Livro livro = new Livro();
 
@@ -32,6 +33,14 @@ public class LivroBean {
 
 	public void setAutorId(Integer autorId) {
 		this.autorId = autorId;
+	}
+	
+	public Integer getLivroId() {
+		return livroId;
+	}
+
+	public void setLivroId(Integer livroId) {
+		this.livroId = livroId;
 	}
 
 	public List<Livro> getLivros() {
@@ -54,13 +63,32 @@ public class LivroBean {
 					new FacesMessage("Livro deve ter pelo menos um Autor"));
 		}
 
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		if (this.livro.getId() == null) {
+			new DAO<Livro>(Livro.class).adiciona(this.livro);
+		} else {
+			new DAO<Livro>(Livro.class).atualiza(this.livro);
+		}
+		
 		this.livro = new Livro();
+	}
+	
+	public void remover(Livro livro) {
+		System.out.println("Removendo livro " + livro.getTitulo());
+		new DAO<Livro>(Livro.class).remove(livro);
+	}
+	
+	public void carregar(Livro livro) {
+		System.out.println("Carregando livro " + livro.getTitulo());
+		this.livro = livro;
 	}
 
 	public void gravarAutor() {
 		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorId);
 		this.livro.adicionaAutor(autor);
+	}
+	
+	public void removerAutorDoLivro(Autor autor) {
+		this.livro.removerAutor(autor);
 	}
 
 	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
@@ -74,4 +102,9 @@ public class LivroBean {
 		System.out.println("Chamando o formulário do autor");
 		return new RedirectView("autor");
 	}
+	
+	public void carregarLivroPelaId() {
+		this.livro = new DAO<Livro>(Livro.class).buscaPorId(livroId);
+	}
+
 }

@@ -4,6 +4,10 @@ public class RedirectView {
 
 	private String viewName;
 
+	public String getViewName() {
+		return viewName;
+	}
+
 	public RedirectView(String viewName) {
 		this.viewName = viewName;
 	}

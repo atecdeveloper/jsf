@@ -9,7 +9,7 @@ public class LogPhaseListener implements javax.faces.event.PhaseListener {
 
 	@Override
 	public void afterPhase(PhaseEvent event) {	}
-
+		
 	@Override
 	public void beforePhase(PhaseEvent event) {
 		System.out.println("FASE: " + event.getPhaseId());
